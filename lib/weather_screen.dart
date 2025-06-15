@@ -36,7 +36,7 @@ class weatherscreen extends StatelessWidget{
         padding: const EdgeInsets.all(16.0),
         child: Column(
           //main display
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               width: double.infinity,
@@ -71,7 +71,6 @@ class weatherscreen extends StatelessWidget{
                               fontSize: 30,
                               fontWeight: FontWeight.bold
                             ),
-                      
                           )
                         ],
                       ),
@@ -80,11 +79,69 @@ class weatherscreen extends StatelessWidget{
                 ),
               ),
             ),
-
+            Padding(
+              padding: const EdgeInsets.only(top: 11,bottom: 11),
+              child: Text("Weather Forecast",style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24
+              ),),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Forecast_card(),
+                  Forecast_card(),
+                  Forecast_card(),
+                  Forecast_card(),
+              
+                ],
+              ),
+            )
+            
           ],
         ),
       ),
     );
   }
 
+}
+
+class Forecast_card extends StatelessWidget {
+  const Forecast_card({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+          return SizedBox(
+                width: 110,
+                child: Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(13)),
+                  color : const Color.fromARGB(255, 56, 62, 74),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 7,),
+                      Text("Time",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17
+                      ),),
+
+                      SizedBox(height: 7,),
+                      Icon(Icons.cloud,
+                        size: 47,
+                      ),
+                      SizedBox(height: 7,),
+                      Text("310 K",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17
+                      ),),
+                      SizedBox(height: 7,),
+
+                    ],
+                  ),
+                ),
+              );
+  }
 }
