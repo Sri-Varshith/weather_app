@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 
 class weatherscreen extends StatelessWidget{
@@ -202,7 +203,59 @@ class weatherscreen extends StatelessWidget{
                       ],
                     ),
                   ),
-                
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 150,
+                    child: Column(
+                      children: [
+                        Icon(Icons.sunny,
+                          color: Colors.amber,
+                          size: 43,
+                        ),
+                        SizedBox(
+                          height: 11,
+                        ),
+                        Text("AM",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                        ),
+                        )
+                      ],
+                    ),
+                ),
+                SizedBox(width: 30,
+                  child: Icon(CupertinoIcons.arrow_right,
+                    size: 37
+                  ),
+                  
+                ),
+                SizedBox(
+                  width: 150,
+                    child: Column(
+                      children: [
+                        Icon(CupertinoIcons.moon_circle,
+                          color: Colors.blueAccent,
+                          size: 43,
+                        ),
+                        SizedBox(
+                          height: 11,
+                        ),
+                        Text("PM",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                        ),
+                        )
+                      ],
+                    ),
+                )
               ],
             )
           ],
