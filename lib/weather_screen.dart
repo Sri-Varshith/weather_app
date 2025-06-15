@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'forecast_card.dart';
+import 'additional_info_card.dart';
 
 
 class weatherscreen extends StatelessWidget{
@@ -9,7 +11,6 @@ class weatherscreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    const Color color_for_items_in_appbar = Color.fromARGB(255, 94, 132, 203);
     return Scaffold(
       appBar: AppBar(
         title: Text("Weather App",
@@ -92,10 +93,10 @@ class weatherscreen extends StatelessWidget{
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  Forecast_card(),
-                  Forecast_card(),
-                  Forecast_card(),
-                  Forecast_card(),
+                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
               
                 ],
               ),
@@ -109,110 +110,20 @@ class weatherscreen extends StatelessWidget{
               ),),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
-                  width: 120,
-                  child:
-                     Column(
-                      children: [
-                        Icon(Icons.water_drop,
-                          size: 41,
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("Humidity",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("VALue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                SizedBox(
-                  width: 120,
-                  child:
-                     Column(
-                      children: [
-                        Icon(Icons.wind_power,
-                          size: 41,
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("Wind Speed",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("VALue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                SizedBox(
-                  width: 120,
-                  child:
-                     Column(
-                      children: [
-                        Icon(Icons.speed,
-                          size: 41,
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("Pressure",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400
-                          ),
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text("VALue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            additional_information_items(icon: Icons.water_drop,label: "Humidity",value: "value",),
+            additional_information_items(icon: Icons.wind_power,label: "Wind Speed",value: "value",),
+            additional_information_items(icon: Icons.speed,label: "Pressure",value: "value",),
               ],
             ),
             SizedBox(
               height: 25,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  width: 150,
-                    child: Column(
+                     Column(
                       children: [
                         Icon(Icons.sunny,
                           color: Colors.amber,
@@ -229,16 +140,11 @@ class weatherscreen extends StatelessWidget{
                         )
                       ],
                     ),
-                ),
-                SizedBox(width: 30,
-                  child: Icon(CupertinoIcons.arrow_right,
+                   Icon(CupertinoIcons.arrow_right,
                     size: 37
                   ),
                   
-                ),
-                SizedBox(
-                  width: 150,
-                    child: Column(
+                     Column(
                       children: [
                         Icon(CupertinoIcons.moon_circle,
                           color: Colors.blueAccent,
@@ -255,7 +161,6 @@ class weatherscreen extends StatelessWidget{
                         )
                       ],
                     ),
-                )
               ],
             )
           ],
@@ -266,39 +171,5 @@ class weatherscreen extends StatelessWidget{
 
 }
 
-class Forecast_card extends StatelessWidget {
-  const Forecast_card({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-          return SizedBox(
-                width: 110,
-                child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(13)),
-                  color : const Color.fromARGB(255, 56, 62, 74),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 7,),
-                      Text("Time",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17
-                      ),),
-                      SizedBox(height: 7,),
-                      Icon(Icons.cloud,
-                        size: 47,
-                      ),
-                      SizedBox(height: 7,),
-                      Text("310 K",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17
-                      ),),
-                      SizedBox(height: 7,),
 
-                    ],
-                  ),
-                ),
-              );
-  }
-}
