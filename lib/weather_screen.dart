@@ -98,8 +98,113 @@ class weatherscreen extends StatelessWidget{
               
                 ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 11,bottom: 11),
+              child: Text("Additional Information",style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 22
+              ),),
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 120,
+                  child:
+                     Column(
+                      children: [
+                        Icon(Icons.water_drop,
+                          size: 41,
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("Humidity",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400
+                          ),
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("VALue",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  width: 120,
+                  child:
+                     Column(
+                      children: [
+                        Icon(Icons.wind_power,
+                          size: 41,
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("Wind Speed",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400
+                          ),
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("VALue",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  width: 120,
+                  child:
+                     Column(
+                      children: [
+                        Icon(Icons.speed,
+                          size: 41,
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("Pressure",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400
+                          ),
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text("VALue",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                
+              ],
             )
-            
           ],
         ),
       ),
@@ -126,7 +231,6 @@ class Forecast_card extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 17
                       ),),
-
                       SizedBox(height: 7,),
                       Icon(Icons.cloud,
                         size: 47,
