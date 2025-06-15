@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:weather_app/current_weather.dart';
 import 'forecast_card.dart';
 import 'additional_info_card.dart';
 
@@ -40,47 +41,7 @@ class weatherscreen extends StatelessWidget{
           //main display
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(12),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10,sigmaY: 10),
-                  child: Card(
-                    elevation: 2,
-                      color : const Color.fromARGB(255, 56, 62, 74),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(19)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("310 K",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30
-                            ),
-                          ),
-                          Icon(
-                            color: Colors.white,
-                            Icons.cloud,
-                            size: 80,
-                          ),
-                          Text("Cloudy",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            CurrentWeather(icon: Icons.cloud,temperature: "310 K",weather: "Cloudy"),
             Padding(
               padding: const EdgeInsets.only(top: 11,bottom: 11),
               child: Text("Weather Forecast",style: TextStyle(
