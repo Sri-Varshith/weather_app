@@ -29,7 +29,7 @@ class CurrentWeather extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("310 K",
+                          Text(temperature,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -38,10 +38,10 @@ class CurrentWeather extends StatelessWidget {
                           ),
                           Icon(
                             color: Colors.white,
-                            Icons.cloud,
+                            icon,
                             size: 80,
                           ),
-                          Text("Cloudy",
+                          Text(weather,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 30,

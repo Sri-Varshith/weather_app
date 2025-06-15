@@ -20,17 +20,17 @@ class Forecast_card extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 7,),
-                      Text("Time",
+                      Text(time,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17
                       ),),
                       SizedBox(height: 7,),
-                      Icon(Icons.cloud,
+                      Icon(icon,
                         size: 47,
                       ),
                       SizedBox(height: 7,),
-                      Text("310 K",
+                      Text(temperature,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17
