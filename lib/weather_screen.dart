@@ -1,14 +1,50 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_app/current_weather.dart';
+import 'package:weather_app/myapikey.dart';
 import 'forecast_card.dart';
 import 'additional_info_card.dart';
+import 'package:http/http.dart' as http;
 
 
-class weatherscreen extends StatelessWidget{
+class weatherscreen extends StatefulWidget{
   const weatherscreen({super.key});
+
+  @override
+  State<weatherscreen> createState() => _weatherscreenState();
+}
+
+class _weatherscreenState extends State<weatherscreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    get_current_weather();
+  }
+
+  Future get_current_weather() async{
+    try{
+      String location = "Hyderabad";
+      final result = await http.get(
+        Uri.parse("https://api.openweathermap.org/data/2.5/weather?q=$location,IN&appid=$api_key"),
+      );
+      final data = jsonDecode(result.body);
+      if(result.statusCode!=200){
+        throw "Error occured";
+      }
+      else{
+        print(data["main"]["temp"]);
+        print(data["name"]);
+      }
+    }
+    catch (e){
+      throw e.toString();
+    }
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +165,6 @@ class weatherscreen extends StatelessWidget{
       ),
     );
   }
-
 }
 
 
