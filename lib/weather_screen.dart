@@ -18,7 +18,8 @@ class weatherscreen extends StatefulWidget{
 }
 
 class _weatherscreenState extends State<weatherscreen> {
-
+  double curr_temp=0;
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
@@ -27,6 +28,9 @@ class _weatherscreenState extends State<weatherscreen> {
 
   Future get_current_weather() async{
     try{
+      setState(() {
+        isloading = true;
+      });
       String location = "Hyderabad";
       final result = await http.get(
         Uri.parse("https://api.openweathermap.org/data/2.5/weather?q=$location,IN&appid=$api_key"),
@@ -36,8 +40,10 @@ class _weatherscreenState extends State<weatherscreen> {
         throw "Error occured";
       }
       else{
-        print(data["main"]["temp"]);
-        print(data["name"]);
+        setState(() {
+            curr_temp = data["main"]["temp"];
+            isloading = false;
+        });
       }
     }
     catch (e){
@@ -71,13 +77,13 @@ class _weatherscreenState extends State<weatherscreen> {
           ],
         centerTitle: true,
       ),
-      body: Padding(
+      body: isloading ? LinearProgressIndicator(): Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           //main display
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CurrentWeather(icon: Icons.cloud,temperature: "310 K",weather: "Cloudy"),
+            CurrentWeather(icon: Icons.cloud,temperature: "$curr_temp K",weather: "Cloudy"),
             Padding(
               padding: const EdgeInsets.only(top: 11,bottom: 11),
               child: Text("Weather Forecast",style: TextStyle(
