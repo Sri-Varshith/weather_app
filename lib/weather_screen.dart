@@ -84,6 +84,9 @@ class _weatherscreenState extends State<weatherscreen> {
           final data = snapshot.data!;
           final curr_temp = data["main"]["temp"];
           final curr_weather = data["weather"][0]["main"];
+          final curr_humidity = data["main"]["humidity"].toString();
+          final curr_pressure = data["main"]["pressure"].toString();
+          final curr_wind_speed = data["wind"]["speed"].toString();
           const weather_details = {
             "Clouds" : Icons.cloud,
             "Rain" : CupertinoIcons.cloud_rain_fill,
@@ -137,9 +140,9 @@ class _weatherscreenState extends State<weatherscreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                additional_information_items(icon: Icons.water_drop,label: "Humidity",value: "value",),
-                additional_information_items(icon: Icons.wind_power,label: "Wind Speed",value: "value",),
-                additional_information_items(icon: Icons.speed,label: "Pressure",value: "value",),
+                additional_information_items(icon: Icons.water_drop,label: "Humidity",value: curr_humidity,),
+                additional_information_items(icon: Icons.wind_power,label: "Wind Speed",value: curr_wind_speed,),
+                additional_information_items(icon: Icons.speed,label: "Pressure",value: curr_pressure,),
                   ],
                 ),
                 SizedBox(
