@@ -18,19 +18,15 @@ class weatherscreen extends StatefulWidget{
 }
 
 class _weatherscreenState extends State<weatherscreen> {
-  double curr_temp=0;
-  bool isloading = false;
+
   @override
   void initState() {
     super.initState();
     get_current_weather();
   }
 
-  Future get_current_weather() async{
+  Future<Map<String,dynamic>> get_current_weather() async{
     try{
-      setState(() {
-        isloading = true;
-      });
       String location = "Hyderabad";
       final result = await http.get(
         Uri.parse("https://api.openweathermap.org/data/2.5/weather?q=$location,IN&appid=$api_key"),
@@ -39,12 +35,8 @@ class _weatherscreenState extends State<weatherscreen> {
       if(result.statusCode!=200){
         throw "Error occured";
       }
-      else{
-        setState(() {
-            curr_temp = data["main"]["temp"];
-            isloading = false;
-        });
-      }
+      return data;
+
     }
     catch (e){
       throw e.toString();
@@ -77,97 +69,129 @@ class _weatherscreenState extends State<weatherscreen> {
           ],
         centerTitle: true,
       ),
-      body: isloading ? LinearProgressIndicator(): Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          //main display
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CurrentWeather(icon: Icons.cloud,temperature: "$curr_temp K",weather: "Cloudy"),
-            Padding(
-              padding: const EdgeInsets.only(top: 11,bottom: 11),
-              child: Text("Weather Forecast",style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 24
-              ),),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                  Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-              
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 11,bottom: 11),
-              child: Text("Additional Information",style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 22
-              ),),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: FutureBuilder(
+        future: get_current_weather(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return LinearProgressIndicator();
+          }
+          if(snapshot.hasError){
+            return Text(snapshot.error.toString());
+          }
+
+          // we have already checked whether the data can be nullable so we can can directly fetch data otherwise its always a safer option to use the following way:
+
+          final data = snapshot.data!;
+          final curr_temp = data["main"]["temp"];
+          final curr_weather = data["weather"][0]["main"];
+          const weather_details = {
+            "Clouds" : Icons.cloud,
+            "Rain" : CupertinoIcons.cloud_rain_fill,
+            "Thunderstorm" : CupertinoIcons.cloud_rain_fill,
+            "Drizzle" : CupertinoIcons.cloud_rain_fill,
+            "Snow" : CupertinoIcons.cloud_snow,
+            "Clear" : Icons.sunny,
+
+          };
+          // safer way of doing it:
+          // if(snapshot.data!=null){
+
+          // }
+
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              //main display
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            additional_information_items(icon: Icons.water_drop,label: "Humidity",value: "value",),
-            additional_information_items(icon: Icons.wind_power,label: "Wind Speed",value: "value",),
-            additional_information_items(icon: Icons.speed,label: "Pressure",value: "value",),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                     Column(
-                      children: [
-                        Icon(Icons.sunny,
-                          color: Colors.amber,
-                          size: 43,
-                        ),
-                        SizedBox(
-                          height: 11,
-                        ),
-                        Text("AM",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        ),
-                        )
-                      ],
-                    ),
-                   Icon(CupertinoIcons.arrow_right,
-                    size: 37
-                  ),
+                CurrentWeather(icon: weather_details[curr_weather]!,temperature: "$curr_temp K",weather: curr_weather),
+                Padding(
+                  padding: const EdgeInsets.only(top: 11,bottom: 11),
+                  child: Text("Weather Forecast",style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24
+                  ),),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
+                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
                   
-                     Column(
-                      children: [
-                        Icon(CupertinoIcons.moon_circle,
-                          color: Colors.blueAccent,
-                          size: 43,
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 11,bottom: 11),
+                  child: Text("Additional Information",style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22
+                  ),),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                additional_information_items(icon: Icons.water_drop,label: "Humidity",value: "value",),
+                additional_information_items(icon: Icons.wind_power,label: "Wind Speed",value: "value",),
+                additional_information_items(icon: Icons.speed,label: "Pressure",value: "value",),
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                         Column(
+                          children: [
+                            Icon(Icons.sunny,
+                              color: Colors.amber,
+                              size: 43,
+                            ),
+                            SizedBox(
+                              height: 11,
+                            ),
+                            Text("AM",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
+                            ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          height: 11,
+                       Icon(CupertinoIcons.arrow_right,
+                        size: 37
+                      ),
+                      
+                         Column(
+                          children: [
+                            Icon(CupertinoIcons.moon_circle,
+                              color: Colors.blueAccent,
+                              size: 43,
+                            ),
+                            SizedBox(
+                              height: 11,
+                            ),
+                            Text("PM",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
+                            ),
+                            )
+                          ],
                         ),
-                        Text("PM",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        ),
-                        )
-                      ],
-                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          );
+        }
       ),
     );
   }
