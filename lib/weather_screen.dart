@@ -8,6 +8,8 @@ import 'package:weather_app/myapikey.dart';
 import 'forecast_card.dart';
 import 'additional_info_card.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
 
 
 class weatherscreen extends StatefulWidget{
@@ -96,6 +98,14 @@ class _weatherscreenState extends State<weatherscreen> {
             "Clear" : Icons.sunny,
 
           };
+          
+          int sunriseUnix = data["sys"]["sunrise"]; // from API
+          int sunsetUnix = data["sys"]["sunset"];  // from API
+
+          final sunrise = DateTime.fromMillisecondsSinceEpoch(sunriseUnix * 1000).toLocal();
+          final sunset = DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000).toLocal();
+
+          final timeFormat = DateFormat.jm(); // e.g. "6:00 AM"
           // safer way of doing it:
           // if(snapshot.data!=null){
 
@@ -160,7 +170,7 @@ class _weatherscreenState extends State<weatherscreen> {
                             SizedBox(
                               height: 11,
                             ),
-                            Text("AM",
+                            Text(timeFormat.format(sunrise),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18
@@ -181,7 +191,7 @@ class _weatherscreenState extends State<weatherscreen> {
                             SizedBox(
                               height: 11,
                             ),
-                            Text("PM",
+                            Text(timeFormat.format(sunset),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18
