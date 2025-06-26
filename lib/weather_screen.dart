@@ -26,7 +26,18 @@ class _weatherscreenState extends State<weatherscreen> {
     super.initState();
     get_current_weather();
   }
+  Future<Map<String, dynamic>> fetchForecast() async {
+  String location = "Hyderabad";
+  final response = await http.get(
+    Uri.parse("https://api.openweathermap.org/data/2.5/forecast?q=$location,IN&appid=$api_key"),
+  );
 
+  if (response.statusCode != 200) {
+    throw "Forecast API error";
+  }
+
+  return jsonDecode(response.body);
+}
   Future<Map<String,dynamic>> get_current_weather() async{
     try{
       String location = "Hyderabad";
@@ -45,6 +56,17 @@ class _weatherscreenState extends State<weatherscreen> {
     }
     
   }
+  Future<Map<String, dynamic>> fetchWeatherData() async {
+  final currentWeather = get_current_weather();
+  final forecast = fetchForecast();
+
+  final results = await Future.wait([currentWeather, forecast]);
+
+  return {
+    'current': results[0],
+    'forecast': results[1],
+  };
+}
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +94,7 @@ class _weatherscreenState extends State<weatherscreen> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: get_current_weather(),
+        future: fetchWeatherData(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting){
             return LinearProgressIndicator();
@@ -83,7 +105,7 @@ class _weatherscreenState extends State<weatherscreen> {
 
           // we have already checked whether the data can be nullable so we can can directly fetch data otherwise its always a safer option to use the following way:
 
-          final data = snapshot.data!;
+          final data = snapshot.data!["current"];
           final curr_temp = data["main"]["temp"];
           final curr_weather = data["weather"][0]["main"];
           final curr_humidity = data["main"]["humidity"].toString();
@@ -110,6 +132,8 @@ class _weatherscreenState extends State<weatherscreen> {
           // if(snapshot.data!=null){
 
           // }
+          final forecast_data = snapshot.data!["forecast"]["list"];
+
 
 
           return Padding(
@@ -127,17 +151,21 @@ class _weatherscreenState extends State<weatherscreen> {
                     fontSize: 24
                   ),),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                      Forecast_card(icon: Icons.cloud,temperature: "310 K",time: "Time",),
-                  
-                    ],
-                  ),
+
+                SizedBox(
+                  height: 137,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 4,
+                    itemBuilder: (context,index) {
+                      final curr_time_unix=forecast_data[index+1]["dt"];
+                      final curr_time = DateTime.fromMillisecondsSinceEpoch(curr_time_unix * 1000).toLocal();
+                        return Forecast_card(
+                          icon: weather_details[forecast_data[index+1]["weather"][0]["main"]]!,
+                          temperature: "${forecast_data[index+1]["main"]["temp"]} K",
+                          time: timeFormat.format(curr_time),);
+                    },
+                    ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 11,bottom: 11),
