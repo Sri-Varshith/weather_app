@@ -20,11 +20,11 @@ class weatherscreen extends StatefulWidget{
 }
 
 class _weatherscreenState extends State<weatherscreen> {
-
+  late Future<Map<String,dynamic>> weather = fetchWeatherData();
   @override
   void initState() {
     super.initState();
-    get_current_weather();
+    weather = fetchWeatherData();
   }
   Future<Map<String, dynamic>> fetchForecast() async {
   String location = "Hyderabad";
@@ -82,7 +82,9 @@ class _weatherscreenState extends State<weatherscreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // will define the function later
+              setState(() {
+                weather = fetchWeatherData();
+              });
             },
             icon: Icon(
               Icons.refresh,
@@ -94,7 +96,7 @@ class _weatherscreenState extends State<weatherscreen> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: fetchWeatherData(),
+        future: weather,
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting){
             return LinearProgressIndicator();
